@@ -46,13 +46,13 @@ void loop() {
     //Poor quality debounce below
     
     unsigned int count_low = 1; //count number of times we read LOW
-    for(int i = 0; i < 100; i++){ // Try 10 more button readings
+    for(int i = 0; i < 10; i++){ // Try 10 more button readings
       if(digitalRead(9)==LOW){
         count_low++;  
       }
-      delay(5); //5 milis * 100 extra readings = 500ms additional wait. 
+      delay(5); //5 milis * 10 extra readings = 50ms additional wait. 
     }
-    if(count_low > 90){ // 90 out of 101 button low readings. Seems to work ok. 
+    if(count_low > 9){ // 9 out of 10 button low readings. Seems to work ok. 
       state = 0; // reset the timer.
       
       secondCounter = 0;
@@ -63,7 +63,8 @@ void loop() {
   }
   if(currentMillis >= secondCounter * second + lastReset){
     // Count downwards, and update display.
-    secondCounter++;
+    secondCounter =  floor((currentMillis-lastReset)/second);
+    
     if(state==0){
       if(timerDuration>=secondCounter){
         const unsigned long timeRemaining = timerDuration-secondCounter;
